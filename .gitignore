@@ -1,0 +1,8 @@
+__pycache__/
+certs/
+cronjob.log
+paho.log
+publisher.py
+test_mosquitto_tls
+test_tls_sender.py
+upload_times.txt
