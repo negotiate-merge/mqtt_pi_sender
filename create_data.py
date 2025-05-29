@@ -1,7 +1,5 @@
-from datetime import datetime, timedelta
-import json
+from datetime import datetime, timedelta, time
 import random
-import time
 
 # Get the last hour
 def get_last_hour(dt=None, interval=60):
@@ -19,8 +17,18 @@ def get_last_uploaded():
   return datetime.strptime(last_line, "%Y-%m-%d %H:%M:%S")
 
 
-def generateFloat():
-  return round(random.uniform(0, 3.4), 3)
+PEAK_AM_START = time(6, 0)
+PEAK_AM_END = time(9, 0)
+PEAK_PM_START = time(18, 0)
+PEAK_PM_END = time(21, 0)
+
+
+def generateFloat(time):
+  if PEAK_AM_START <= time.time() <= PEAK_AM_END or PEAK_PM_START <= time.time() <= PEAK_PM_END:
+    # print("We are in peak time")
+    return round(random.uniform(1.8, 3.4), 3)
+  # print("Not in peak")
+  return round(random.uniform(0, 2), 3)
 
 def get_messages():
   last_hour = get_last_hour()
@@ -49,7 +57,7 @@ def get_messages():
   msgs = []
 
   # print(time_diff)
-  if time_diff >= timedelta(hours=2):  # Change this back to 2 when ready
+  if time_diff >= timedelta(hours=0):  # Change this back to 2 when ready
     # We will generate the data
     for d in dev_ids:
       msg = {
@@ -61,14 +69,14 @@ def get_messages():
         "battery": 3.587,
         "signal": 25,
         "time": times[7].strftime("%Y-%m-%d %H:%M:%S"),
-        "1":[generateFloat(),generateFloat(), times[0].strftime("%Y-%m-%d %H:%M:%S")],
-        "2":[generateFloat(),generateFloat(), times[1].strftime("%Y-%m-%d %H:%M:%S")],
-        "3":[generateFloat(),generateFloat(), times[2].strftime("%Y-%m-%d %H:%M:%S")],
-        "4":[generateFloat(),generateFloat(), times[3].strftime("%Y-%m-%d %H:%M:%S")],
-        "5":[generateFloat(),generateFloat(), times[4].strftime("%Y-%m-%d %H:%M:%S")],
-        "6":[generateFloat(),generateFloat(), times[5].strftime("%Y-%m-%d %H:%M:%S")],
-        "7":[generateFloat(),generateFloat(), times[6].strftime("%Y-%m-%d %H:%M:%S")],
-        "8":[generateFloat(),generateFloat(), times[7].strftime("%Y-%m-%d %H:%M:%S")],
+        "1":[generateFloat(times[0]),generateFloat(times[0]), times[0].strftime("%Y-%m-%d %H:%M:%S")],
+        "2":[generateFloat(times[1]),generateFloat(times[1]), times[1].strftime("%Y-%m-%d %H:%M:%S")],
+        "3":[generateFloat(times[2]),generateFloat(times[2]), times[2].strftime("%Y-%m-%d %H:%M:%S")],
+        "4":[generateFloat(times[3]),generateFloat(times[3]), times[3].strftime("%Y-%m-%d %H:%M:%S")],
+        "5":[generateFloat(times[4]),generateFloat(times[4]), times[4].strftime("%Y-%m-%d %H:%M:%S")],
+        "6":[generateFloat(times[5]),generateFloat(times[5]), times[5].strftime("%Y-%m-%d %H:%M:%S")],
+        "7":[generateFloat(times[6]),generateFloat(times[6]), times[6].strftime("%Y-%m-%d %H:%M:%S")],
+        "8":[generateFloat(times[7]),generateFloat(times[7]), times[7].strftime("%Y-%m-%d %H:%M:%S")],
       }
       # print(json.dumps(msg, indent=2))
       msgs.append(msg)
